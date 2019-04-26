@@ -58,6 +58,7 @@ def read_cci(fn):
 
 def read_elixhauser(fn):
     dx2elix = {}
+    fn = rscfn(__name__, fn)
     with open(fn, "r") as fp:
         start = False
         end = False
@@ -88,6 +89,7 @@ def read_elixhauser(fn):
 
 def read_prcls(fn):
     pr2cls = {}
+    fn = rscfn(__name__, fn)
     with open(fn, "r") as fp:
         reader = csv.reader(fp, delimiter=",")
         meta = next(reader)
@@ -100,6 +102,7 @@ def read_prcls(fn):
 
 def read_utilflag(fn):
     utilmap = {}
+    fn = rscfn(__name__, fn)
     with open(fn, "r") as fp:
         reader = csv.reader(fp, delimiter=",")
         header = next(reader)

@@ -1,0 +1,221 @@
+/******************************************************************/
+/* Title:       CREATION OF ELIXHAUSER COMORBIDITY INDEX SCORES   */
+/*              COMORBIDITY INDEX, VERSION 1.0                    */
+/*                                                                */
+/* PROGRAM:     comindex2012-2015.txt                             */
+/*                                                                */
+/* Description: Creates two comorbidity index scores based on the */
+/*              29 comorbidity variables in HCUP databases or     */
+/*              calculated using the Elixhauser comorbidity  	  */
+/* 				software (03/27/2017)							  */
+/******************************************************************/
+
+
+/***********************************************************/
+/*  Define subdirectory for data files and format library. */
+/*  Input files:    C:\DATA\                               */
+/*  Output files:   C:\DATA\                               */
+/***********************************************************/
+LIBNAME IN1     'C:\DATA\';            
+LIBNAME OUT1    'C:\DATA\';          
+
+/***********************************************************/
+/*  Define dataset that has 29 comorbidity (CM) variables. */
+/***********************************************************/
+%Let    DS_  = Severity_data;
+    ***if 29 variables are from HCUP standard severity file;
+%Let    nv_  = 29;
+
+/***********************************************************/
+/*  Define logic to calculate scores.                      */
+/*  The first 29 parameters are CM variables               */
+/*  rscore_ for readmit index score                        */
+/*  mscore_ for mortality index score                      */
+/***********************************************************/
+
+/***********************************************************/
+/* 	If the 29 comorbidity variables have different names   */
+/* 	in your data, fill in the variable names here (when	   */
+/*	calling the macro get_cmscore)						   */
+/***********************************************************/
+
+%macro get_cmscore(
+aids_    =CM_AIDS, 
+alcohol_ =CM_ALCOHOL,       
+anemdef_ =CM_ANEMDEF,       
+arth_    =CM_ARTH,          
+bldloss_ =CM_BLDLOSS,       
+chf_     =CM_CHF,           
+chrnlung_=CM_CHRNLUNG,      
+coag_    =CM_COAG,          
+depress_ =CM_DEPRESS,       
+dm_      =CM_DM,            
+dmcx_    =CM_DMCX,          
+drug_    =CM_DRUG,          
+htn_c_   =CM_HTN_C,         
+hypothy_ =CM_HYPOTHY,       
+liver_   =CM_LIVER,         
+lymth_   =CM_LYMPH,         
+lytes_   =CM_LYTES,         
+mets_    =CM_METS,         
+neuro_   =CM_NEURO,         
+obese_   =CM_OBESE,         
+para_    =CM_PARA,          
+perivasc_=CM_PERIVASC,      
+psych_   =CM_PSYCH,         
+pulmcirc_=CM_PULMCIRC,      
+renlfail_=CM_RENLFAIL,      
+tumor_   =CM_TUMOR,         
+ulcer_   =CM_ULCER,         
+valve_   =CM_VALVE,         
+wghtloss_=CM_WGHTLOSS,      
+rscore_=readmit_score, 
+mscore_=mortal_score
+       );
+
+/***********************************************************/
+/*  Readmission Weights for calculating scores             */
+/***********************************************************/
+
+rwAIDS      =   19 ;
+rwALCOHOL   =    6 ;
+rwANEMDEF   =    9 ;
+rwARTH      =    4 ;
+rwBLDLOSS   =    3 ;
+rwCHF       =   13 ;
+rwCHRNLUNG  =    8 ;
+rwCOAG      =    7 ;
+rwDEPRESS   =    4 ;
+rwDM        =    6 ;
+rwDMCX      =    9 ;
+rwDRUG      =   14 ;
+rwHTN_C     =   -1 ;
+rwHYPOTHY   =    0 ;
+rwLIVER     =   10 ;
+rwLYMPH     =   16 ;
+rwLYTES     =    8 ;
+rwMETS      =   21 ;
+rwNEURO     =    7 ;
+rwOBESE     =   -3 ;
+rwPARA      =    6 ;
+rwPERIVASC  =    4 ;
+rwPSYCH     =   10 ;
+rwPULMCIRC  =    5 ;
+rwRENLFAIL  =   15 ;
+rwTUMOR     =   15 ;
+rwULCER     =    0 ;
+rwVALVE     =    0 ;
+rwWGHTLOSS  =   10 ;
+
+/***********************************************************/
+/*  Mortality Weights for calculating scores               */
+/***********************************************************/
+
+mwAIDS      =    0 ;
+mwALCOHOL   =   -1 ;
+mwANEMDEF   =   -2 ;
+mwARTH      =    0 ;
+mwBLDLOSS   =   -3 ;
+mwCHF       =    9 ;
+mwCHRNLUNG  =    3 ;
+mwCOAG      =   11 ;
+mwDEPRESS   =   -5 ;
+mwDM        =    0 ;
+mwDMCX      =   -3 ;
+mwDRUG      =   -7 ;
+mwHTN_C     =   -1 ;
+mwHYPOTHY   =    0 ;
+mwLIVER     =    4 ;
+mwLYMPH     =    6 ;
+mwLYTES     =   11 ;
+mwMETS      =   14 ;
+mwNEURO     =    5 ;
+mwOBESE     =   -5 ;
+mwPARA      =    5 ;
+mwPERIVASC  =    3 ;
+mwPSYCH     =   -5 ;
+mwPULMCIRC  =    6 ;
+mwRENLFAIL  =    6 ;
+mwTUMOR     =    7 ;
+mwULCER     =    0 ;
+mwVALVE     =    0 ;
+mwWGHTLOSS  =    9 ;
+
+array cmvars(&nv_) 	&aids_    &alcohol_  &anemdef_ &arth_     &bldloss_  &chf_     &chrnlung_ &coag_    &depress_ &dm_      
+					&dmcx_    &drug_     &htn_c_   &hypothy_  &liver_    &lymth_   &lytes_    &mets_    &neuro_   &obese_   
+					&para_    &perivasc_ &psych_   &pulmcirc_ &renlfail_ &tumor_   &ulcer_    &valve_   &wghtloss_
+					;
+
+array rwcms(&nv_) 	rwAIDS    rwALCOHOL  rwANEMDEF rwARTH     rwBLDLOSS   rwCHF    rwCHRNLUNG  rwCOAG    rwDEPRESS rwDM            
+					rwDMCX    rwDRUG     rwHTN_C   rwHYPOTHY  rwLIVER     rwLYMPH  rwLYTES     rwMETS    rwNEURO   rwOBESE         
+					rwPARA    rwPERIVASC rwPSYCH   rwPULMCIRC rwRENLFAIL  rwTUMOR  rwULCER     rwVALVE   rwWGHTLOSS      
+					;
+
+array mwcms(&nv_) 	mwAIDS    mwALCOHOL  mwANEMDEF mwARTH     mwBLDLOSS   mwCHF    mwCHRNLUNG  mwCOAG    mwDEPRESS  mwDM            
+					mwDMCX    mwDRUG     mwHTN_C   mwHYPOTHY  mwLIVER     mwLYMPH  mwLYTES     mwMETS    mwNEURO    mwOBESE         
+					mwPARA    mwPERIVASC mwPSYCH   mwPULMCIRC mwRENLFAIL  mwTUMOR  mwULCER     mwVALVE   mwWGHTLOSS      
+					;
+
+array ocms(&nv_)  	oAIDS     oALCOHOL   oANEMDEF  oARTH      oBLDLOSS    oCHF     oCHRNLUNG   oCOAG     oDEPRESS   oDM            
+					oDMCX     oDRUG      oHTN_C    oHYPOTHY   oLIVER      oLYMPH   oLYTES      oMETS     oNEURO     oOBESE         
+					oPARA     oPERIVASC  oPSYCH    oPULMCIRC  oRENLFAIL   oTUMOR   oULCER      oVALVE    oWGHTLOSS      
+					;  
+
+*****Calculate readmit score;
+do i = 1 to &nv_;
+  ocms[i]=cmvars[i]*rwcms[i];
+end;
+
+&rscore_ = sum(of ocms[*]);
+
+*****Calculate mortality score;
+do i = 1 to &nv_;
+  ocms[i]=cmvars[i]*mwcms[i];
+end;
+
+&mscore_ = sum(of ocms[*]);
+
+***drop all intermediate variables;
+drop rw: mw: o: i;
+
+%mend;
+
+DATA OUT1.ANALYSIS;
+    SET  IN1.&DS_ ;
+    %get_cmscore;
+    ***two output score names are readmit_score and mortal_score;
+
+RUN;
+
+
+/*************************************************/
+/* Sample print and contents of comorbidity file */
+/*************************************************/  
+PROC PRINT DATA=OUT1.ANALYSIS (OBS=60);
+  TITLE3 'Print of analysis file variables';
+RUN;
+
+PROC CONTENTS DATA=OUT1.ANALYSIS ;
+  TITLE3 'Contents of comorbidity analysis file';
+RUN;
+
+/****************************************/
+/*  Frequency of comorbidity variables  */
+/****************************************/ 
+PROC FREQ DATA=OUT1.ANALYSIS;
+  TABLE  readmit_score mortal_score
+       / LIST MISSING;
+  TITLE3 'Frequency of comorbidity variables';
+RUN;
+
+/***********************************/
+/*  Means of comorbidity variables */
+/***********************************/  
+PROC MEANS DATA=OUT1.ANALYSIS  N NMISS MEAN STD MIN MAX;
+  VAR    readmit_score mortal_score
+      ;
+   TITLE3 'Means of comorbidity variables';
+RUN;
+
+
+

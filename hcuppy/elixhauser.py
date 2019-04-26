@@ -1,4 +1,3 @@
-import csv
 from collections import Counter
 import hcuppy.utils as utils
 

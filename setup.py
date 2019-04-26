@@ -15,7 +15,7 @@ setup(packages=find_packages(),
     license="Apaceh 2.0", 
     install_requires = ["numpy"],
     include_package_data=True,
-    package_data={"": ["*.TXT", "*.csv"]},
+    package_data={"": ["*.txt", "*.csv"]},
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: Apache Software License",

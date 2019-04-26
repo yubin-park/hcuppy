@@ -117,6 +117,7 @@ def read_surgeryflag(fn):
     # https://www.hcup-us.ahrq.gov/toolssoftware/surgflags/surgeryflags_license.jsp
     cpt2flag = {}
     desc = {"1": "broad", "2": "narrow"}
+    fn = rscfn(__name__, fn)
     with open(fn, "r") as fp:
         reader = csv.reader(fp, delimiter=",")
         meta = next(reader)
@@ -124,30 +125,18 @@ def read_surgeryflag(fn):
         for row in reader:
             row = _clnrw(row)
             tokens = row[0].split("-")
-            if len(tokens)==2:
-                cpt2flag[(tokens[0], tokens[1])] = {"flag": row[1],
-                                                    "desc": desc[row[1]]}
+            if len(tokens) != 2:
+                continue
+            start, end = 0, 0
+            try:
+                start = int(tokens[0])
+                end = int(tokens[1])
+                for cpt in range(start, end+1):
+                    cpt2flag[str(cpt)] = {"flag": row[1],
+                                        "desc": desc[row[1]]}
+            except ValueError:
+                pass
+                
     return cpt2flag
 
-#if __name__=="__main__":
-
-    #fn = "data/ccs_dx_icd10cm_2019_1.csv"
-    #fn = "data/ccs_pr_icd10pcs_2019_1.csv"
-    #pr2ccs = read_ccs(fn)
-    #print(pr2ccs)
-
-    #fn = "data/cci_icd10cm_2019_1.csv"
-    #print(read_cci(fn))
-
-    #fn = "data/elix_comformat_icd10cm_2019_1.txt"
-    #print(read_elixhauser(fn))
-
-    #fn = "data/pc_icd10pcs_2018.csv"
-    #print(read_prcls(fn))
-
-    #fn = "data/ICD10PCS_utilizationflagformats_FY2019_1.csv"
-    #print(read_utilflag(fn))
-
-    #fn = "data/surgery_flags_cpt_2017.csv"
-    #print(read_surgeryflag(fn))
 

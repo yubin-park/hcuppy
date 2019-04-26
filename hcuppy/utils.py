@@ -126,7 +126,7 @@ def read_surgeryflag(fn):
                                                     "desc": desc[row[1]]}
     return cpt2flag
 
-if __name__=="__main__":
+#if __name__=="__main__":
 
     #fn = "data/ccs_dx_icd10cm_2019_1.csv"
     #fn = "data/ccs_pr_icd10pcs_2019_1.csv"
@@ -135,6 +135,7 @@ if __name__=="__main__":
 
     #fn = "data/cci_icd10cm_2019_1.csv"
     #print(read_cci(fn))
+
     #fn = "data/elix_comformat_icd10cm_2019_1.txt"
     #print(read_elixhauser(fn))
 

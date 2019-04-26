@@ -1,4 +1,5 @@
-# hcuppy (a Python package for HCUP Tools and Software)
+# H-CUP Python Package (hcuppy)
+A Python package for [H-CUP Tools and Software](https://www.hcup-us.ahrq.gov/tools_software.jsp)
 
 ## References
 - https://www.hcup-us.ahrq.gov/

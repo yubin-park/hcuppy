@@ -7,6 +7,22 @@ class CCIEngine:
         self.dx2cci = utils.read_cci(fn)
 
     def get_cci(self, dx_lst):
+        """
+        Returns CCI or a list of CCI for the given ICD code(s).
+        Here, CCI stands for Chronic Condition Indicator..
+        The original software can be found at 
+        https://www.hcup-us.ahrq.gov/toolssoftware/
+            chronic_icd10/chronic_icd10.jsp
+
+        Parameters
+        __________
+        icd_lst: list of str, or str
+                A list of ICD10 diagnosis codes.
+                The output is  a list of corresponding CCIs.
+                If this parameter is a scalar (not a list), then 
+                the output will be a scalar.
+        """
+
 
         output_type = "list"
         if not isinstance(dx_lst, list):

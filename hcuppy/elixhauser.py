@@ -33,6 +33,18 @@ class ElixhauserEngine:
             }
 
     def get_elixhauser(self, dx_lst):
+        """
+        Returns the Elixhauser Comorbidity Index for the given list of 
+        diagnosis codes.
+        The original software can be found at
+        https://www.hcup-us.ahrq.gov/toolssoftware/comorbidityicd10/
+            comorbidity_icd10.jsp
+
+        Parameters
+        __________
+        icd_lst: list of str
+                A list of ICD10 diagnosis codes.
+        """
 
         def search(dx):
             cmrbdt = ""

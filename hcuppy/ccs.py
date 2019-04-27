@@ -13,6 +13,20 @@ class CCSEngine:
             self.icd2ccs = utils.read_ccs(fn)
     
     def get_ccs(self, icd_lst):
+        """
+        Returns CCS or a list of CCS for the given ICD code(s).
+        Here, CCS stands for Clinical Classifications Software.
+        The original software can be found at 
+        https://www.hcup-us.ahrq.gov/toolssoftware/ccs10/ccs10.jsp
+
+        Parameters
+        __________
+        icd_lst: list of str, or str
+                A list of ICD10 diagnosis or procedure codes.
+                The output is a list of corresponding CCS categories.
+                If this parameter is a scalar (not a list), then 
+                the output will be a scalar.
+        """
 
         output_type = "list"
         if not isinstance(icd_lst, list):

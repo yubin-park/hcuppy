@@ -7,6 +7,21 @@ class PrClsEngine:
         self.pr2cls = utils.read_prcls(fn)
 
     def get_prcls(self, pr_lst):
+        """
+        Returns Procedure Class or 
+            a list of Procedure Class for the given ICD procedure code(s).
+        The original software can be found at 
+        https://www.hcup-us.ahrq.gov/toolssoftware/procedureicd10/
+            procedure_icd10.jsp
+
+        Parameters
+        __________
+        pr_lst: list of str, or str
+                A list of ICD10 procedure codes.
+                The output is a list of corresponding Procedure Classes.
+                If this parameter is a scalar (not a list), then 
+                the output will be a scalar.
+        """
 
         output_type = "list"
         if not isinstance(pr_lst, list):

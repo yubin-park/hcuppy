@@ -13,6 +13,10 @@ class TestElixhauserEngine(unittest.TestCase):
         out = ee.get_elixhauser(["M545"])
         self.assertTrue(len(out["cmrbdt_lst"])==0)
 
+        out = ee.get_elixhauser(["D473"])
+        self.assertTrue(len(out["cmrbdt_lst"])==0)
+
+
 if __name__=="__main__":
     unittest.main()
 

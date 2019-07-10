@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(packages=find_packages(),
     name="hcuppy",
-    version="0.0.2",
+    version="0.0.3",
     description="hcuppy is a Python implementation of HCUP Tools and Software",
     long_description=long_description,
     long_description_content_type="text/markdown",

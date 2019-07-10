@@ -93,7 +93,8 @@ class ElixhauserEngine:
             dx_lst = [dx_lst]
  
         dx_set = {dx.strip().upper().replace(".","") for dx in dx_lst} 
-        rawgrp_lst = list({search(dx) for dx in dx_set})
+        rawgrp_lst = [grp for grp in {search(dx) for dx in dx_set}
+                        if grp != ""]
         cmrbdt_lst = apply_hierarchy(rawgrp_lst) 
 
         rdmsn_scr = apply_score(cmrbdt_lst, "rdmsn")

@@ -10,6 +10,9 @@ class TestElixhauserEngine(unittest.TestCase):
         self.assertEqual(out["rdmsn_scr"], 31)
         self.assertEqual(out["mrtlt_scr"], 9)
 
+        out = ee.get_elixhauser(["M545"])
+        self.assertTrue(len(out["cmrbdt_lst"])==0)
+
 if __name__=="__main__":
     unittest.main()
 

@@ -48,7 +48,8 @@ Thumbs.db
 # Misc #
 ######################
 .ipynb_checkpoints
-surgery_flags_cpt_2017.csv
+cpt2ccs.json
+cpt2sflag.json
 
 
 

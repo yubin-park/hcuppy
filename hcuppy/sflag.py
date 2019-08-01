@@ -3,7 +3,7 @@ import hcuppy.utils as utils
 class SFlagEngine:
 
     def __init__(self):
-        fn = "data/surgery_flags_cpt_2017.csv"
+        fn = "data/cpt2sflag.json"
         self.cpt2flag = utils.read_surgeryflag(fn)
 
     def get_sflag(self, cpt_lst):

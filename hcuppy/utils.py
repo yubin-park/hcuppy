@@ -1,9 +1,89 @@
 import csv
 import re
 from pkg_resources import resource_filename as rscfn
+import requests
+from io import BytesIO
+from io import StringIO
+from zipfile import ZipFile
+from urllib.request import urlopen
+import string
+import json
 
 def _clnrw(row):
     return [x.replace('"',"").replace("'","").strip() for x in row]
+
+def license_cpt():
+    fn = rscfn(__name__, "data/license.txt")
+    aggreement = "reject"
+    with open(fn, "r") as fp:
+        for line in fp.readlines():
+            if line=="\n":
+                continue
+            print(line)
+        agreement = input("(accept/reject):")
+    return agreement=="accept"
+
+def _expand_cpt(x):
+    #x = x.replace("\\","").replace("'","").replace("b","")
+    start, end = x.split("-")
+    if start[0] in string.ascii_uppercase:
+        return [start[0]+str(x) 
+                for x in range(int(start[1:]), int(end[1:])+1)]
+    elif start[-1] in string.ascii_uppercase:
+        return ["{0:04n}{1}".format(x, start[-1])
+                for x in range(int(start[:-1]), int(end[:-1])+1)]
+    else:
+        return ["{0:05n}".format(x) for x in range(int(start), int(end)+1)]
+
+def download_cpt():
+
+    if not license_cpt():
+        print("No CPT files downloaded.")
+        return 1
+
+    url = ("https://www.hcup-us.ahrq.gov/toolssoftware/"+
+            "ccs_svcsproc/2019_ccs_services_procedures.zip")
+    fn = "2019_ccs_services_procedures.csv"
+    res = urlopen(url)
+    cpt2ccs = {}
+    with ZipFile(BytesIO(res.read())) as zp:
+        for line in zp.open(fn).readlines():
+            row = _clnrw(line.decode("utf-8").split(","))
+            if len(row) != 3 or "-" not in row[0]:
+                continue
+            ccs = row[1]
+            desc = row[2]
+            for cpt in _expand_cpt(row[0]):
+                cpt2ccs[cpt] = {"ccs": ccs,
+                                "ccs_desc": desc}
+    fn = rscfn(__name__, "data/cpt2ccs.json")
+    with open(fn, "w") as fp:
+        json.dump(cpt2ccs, fp=fp, indent=2, sort_keys=True)
+
+
+    cpt2sflag = {}
+    desc = {"1": "broad", "2": "narrow"}
+    url = ("https://www.hcup-us.ahrq.gov/toolssoftware/surgflags/"+
+            "surgery_flags_cpt_2017.csv")
+    res = urlopen(url)
+    reader = csv.reader(StringIO(res.read().decode("utf-8")))
+    meta = next(reader)
+    header = next(reader)
+    for row in reader:
+        row = _clnrw(row)
+        if "-" not in row[0]:
+            continue
+        flag = row[1]
+        for cpt in _expand_cpt(row[0]):
+            cpt2sflag[cpt] = {"flag": flag,
+                            "desc": desc[flag]}
+    
+    fn = rscfn(__name__, "data/cpt2sflag.json")
+    with open(fn, "w") as fp:
+        json.dump(cpt2sflag, fp=fp, indent=2, sort_keys=True)
+
+
+    return 0
 
 def read_ccs(fn):
     icd2ccs = {}
@@ -113,30 +193,13 @@ def read_utilflag(fn):
     return utilmap
 
 def read_surgeryflag(fn):
-    # NOTE: Users need to agree on the license below before using it
-    # https://www.hcup-us.ahrq.gov/toolssoftware/surgflags/surgeryflags_license.jsp
-    cpt2flag = {}
-    desc = {"1": "broad", "2": "narrow"}
     fn = rscfn(__name__, fn)
     with open(fn, "r") as fp:
-        reader = csv.reader(fp, delimiter=",")
-        meta = next(reader)
-        header = next(reader)
-        for row in reader:
-            row = _clnrw(row)
-            tokens = row[0].split("-")
-            if len(tokens) != 2:
-                continue
-            start, end = 0, 0
-            try:
-                start = int(tokens[0])
-                end = int(tokens[1])
-                for cpt in range(start, end+1):
-                    cpt2flag[str(cpt)] = {"flag": row[1],
-                                        "desc": desc[row[1]]}
-            except ValueError:
-                pass
-                
-    return cpt2flag
+        return json.load(fp)
+
+def read_cpt2ccs(fn):
+    fn = rscfn(__name__, fn)
+    with open(fn, "r") as fp:
+        return json.load(fp)
 
 

@@ -24,10 +24,9 @@ def license_cpt():
     return agreement=="accept"
 
 def _expand_cpt(x):
-    #x = x.replace("\\","").replace("'","").replace("b","")
     start, end = x.split("-")
     if start[0] in string.ascii_uppercase:
-        return [start[0]+str(x) 
+        return ["{0}{1:04n}".format(start[0], x)
                 for x in range(int(start[1:]), int(end[1:])+1)]
     elif start[-1] in string.ascii_uppercase:
         return ["{0:04n}{1}".format(x, start[-1])
@@ -82,8 +81,19 @@ def download_cpt():
     with open(fn, "w") as fp:
         json.dump(cpt2sflag, fp=fp, indent=2, sort_keys=True)
 
-
     return 0
+
+def read_cpt_sect(fn):
+    cpt2sect = {}
+    fn = rscfn(__name__, fn)
+    with open(fn, "r") as fp:
+        reader = csv.reader(fp, delimiter=",")
+        for row in reader:
+            sect = row[2]
+            desc = row[1]
+            for cpt in _expand_cpt(row[0]):
+                cpt2sect[cpt] = {"sect": sect, "desc": desc}
+    return cpt2sect
 
 def read_ccs(fn):
     icd2ccs = {}
@@ -201,5 +211,8 @@ def read_cpt2ccs(fn):
     fn = rscfn(__name__, fn)
     with open(fn, "r") as fp:
         return json.load(fp)
+
+
+
 
 

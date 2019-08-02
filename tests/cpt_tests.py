@@ -7,6 +7,11 @@ class TestLicense(unittest.TestCase):
         cpt = CPT()
         cpt.download_data()
 
+    def test_section(self):
+        cpt = CPT()
+        out = cpt.get_cpt_section("E0100")
+        self.assertTrue(out["sect"]=="HCPCS2-E")
+
 if __name__=="__main__":
     unittest.main()
 

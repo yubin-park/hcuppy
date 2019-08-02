@@ -1,0 +1,37 @@
+99201-99499,Evaluation & Management Services,CPT1-A
+00100-01999,Anesthesia Services,CPT1-B
+99100-99150,Anesthesia Services,CPT1-B
+10000-69990,Surgery,CPT1-C
+70000-79999,Radiology Services,CPT1-D
+80000-89398,Pathology and Laboratory Services,CPT1-E
+90281-99099,Medical Services and Procedures,CPT1-F
+99151-99199,Medical Services and Procedures,CPT1-F
+99500-99607,Medical Services and Procedures,CPT1-F
+0001F-0015F,Composite measures,CPT2-A
+0500F-0584F,Patient management,CPT2-B
+1000F-1505F,Patient history,CPT2-C
+2000F-2060F,Physical examination,CPT2-D
+3006F-3776F,Diagnostic/screening processes or results,CPT2-E
+4000F-4563F,Therapeutic, preventive or other interventions,CPT2-F
+5005F-5250F,Follow-up or other outcomes,CPT2-G
+6005F-6150F,Patient safety,CPT2-H
+7010F-7025F,Structural measures,CPT2-I
+9001F-9007F,Non-measure claims-based reporting,CPT2-J
+0016T-0207T,Emerging Technology,CPT3-A
+A0000-A9999,"Transportation, Medical & Surgical Supplies, Miscellaneous & Experimental",HCPCS2-A
+B0000-B9999,Enteral and Parenteral Therapy,HCPCS2-B
+C0000-C9999,Temporary Hospital Outpatient Prospective Payment System,HCPCS2-C
+D0000-D9999,Dental Procedures,HCPCS2-D
+E0000-E9999,Durable Medical Equipment,HCPCS2-E
+G0000-G9999,Temporary Procedures & Professional Services,HCPCS2-G
+H0000-H9999,Rehabilitative Services,HCPCS2-H
+J0000-J9999,"Drugs Administered Other Than Oral Method, Chemotherapy Drugs",HCPCS2-J
+K0000-K9999,Temporary Codes for Durable Medical Equipment Regional Carriers,HCPCS2-K
+L0000-L9999,Orthotic/Prosthetic Procedures,HCPCS2-L
+M0000-M9999,Medical Services,HCPCS2-M
+P0000-P9999,Pathology and Laboratory,HCPCS2-P
+Q0000-Q9999,Temporary Codes,HCPCS2-Q
+R0000-R9999,Diagnostic Radiology Services,HCPCS2-R
+S0000-S9999,Private Payer Codes,HCPCS2-S
+T0000-T9999,State Medicaid Agency Codes,HCPCS2-T
+V0000-V9999,Vision/Hearing Services,HCPCS2-V

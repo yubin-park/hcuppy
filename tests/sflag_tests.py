@@ -9,7 +9,7 @@ class TestSFlagEngine(unittest.TestCase):
 
         out = sfe.get_sflag(["69970", "randomstring"])
         self.assertEqual(out[0]["flag"], "2")
-        self.assertEqual(out[1], None)
+        self.assertEqual(out[1]["flag"], "na")
 
 if __name__=="__main__":
     unittest.main()

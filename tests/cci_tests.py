@@ -10,7 +10,7 @@ class TestCCIEngine(unittest.TestCase):
         self.assertTrue(ce.has_chronic(["E119"]))
 
         cci_lst = ce.get_cci(["E119", "randomstring"])
-        self.assertEqual(cci_lst[1], None)
+        self.assertEqual(cci_lst[1]["is_chronic"], False)
         self.assertTrue(ce.has_chronic(["E119", "randomstring"]))
 
         self.assertTrue(ce.get_cci("E119")["is_chronic"])

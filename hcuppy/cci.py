@@ -31,9 +31,12 @@ class CCIEngine:
         
         dx_lst = [dx.strip().upper().replace(".","") for dx in dx_lst]
         cci_lst = []
+        out_default = {"is_chronic": False,
+                        "body_system": "na",
+                        "body_system_desc": "na"}
         for dx in dx_lst:
             if dx not in self.dx2cci:
-                cci_lst.append(None)
+                cci_lst.append(out_default)
             else:
                 cci_lst.append(self.dx2cci[dx])
 
@@ -44,14 +47,11 @@ class CCIEngine:
         return out
 
     def has_chronic(self, dx_lst):
-        cci_lst = [cci for cci in self.get_cci(dx_lst) if cci is not None]
+        cci_lst = [cci for cci in self.get_cci(dx_lst)]
         return any(cci["is_chronic"] for cci in cci_lst)
 
     def is_chronic(self, dx):
         cci = self.get_cci(dx)
-        if cci is not None:
-            return cci["is_chronic"] 
-        else:
-            return False
+        return cci["is_chronic"] 
 
 

@@ -11,7 +11,7 @@ class TestCCSEngine(unittest.TestCase):
 
         ccs_lst = cedx.get_ccs(["randomstring", "E119"])
         self.assertEqual(len(ccs_lst), 2)
-        self.assertEqual(ccs_lst[0], None)
+        self.assertEqual(ccs_lst[0]["ccs"], "na")
         self.assertEqual(ccs_lst[1]["ccs"], "49")
 
         ccs = cedx.get_ccs("E119")

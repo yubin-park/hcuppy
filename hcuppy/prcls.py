@@ -30,9 +30,10 @@ class PrClsEngine:
         
         pr_lst = [pr.strip().upper().replace(".","") for pr in pr_lst]
         cls_lst = []
+        out_default = {"class": "na", "desc": "na"}
         for pr in pr_lst:
             if pr not in self.pr2cls:
-                cls_lst.append(None)
+                cls_lst.append(out_default)
             else:
                 cls_lst.append(self.pr2cls[pr])
 

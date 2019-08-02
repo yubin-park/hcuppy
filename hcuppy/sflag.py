@@ -27,9 +27,11 @@ class SFlagEngine:
             cpt_lst = [cpt_lst]
 
         sflag_lst = []
+        out_default = {"flag": "na",
+                        "desc": "na"}
         for cpt in cpt_lst:
             if cpt not in self.cpt2flag:
-                sflag_lst.append(None)
+                sflag_lst.append(out_default)
             else:
                 sflag_lst.append(self.cpt2flag[cpt])
 

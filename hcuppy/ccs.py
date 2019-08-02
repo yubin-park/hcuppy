@@ -38,9 +38,11 @@ class CCSEngine:
 
         x_lst = [x.strip().upper().replace(".","") for x in x_lst]
         ccs_lst = []
+        out_default = {"ccs": "na",
+                        "ccs_desc": "na"}
         for x in x_lst:
             if x not in self.x2ccs:
-                ccs_lst.append(None)
+                ccs_lst.append(out_default)
             else:
                 ccs_lst.append(self.x2ccs[x])
 

@@ -1,6 +1,7 @@
 import unittest
 from hcuppy.ccs import CCSEngine
 
+
 class TestCCSEngine(unittest.TestCase):
 
     def test_ccsmapping(self):
@@ -21,14 +22,6 @@ class TestCCSEngine(unittest.TestCase):
         ccs_lst = cepr.get_ccs(["00800ZZ"])
         self.assertTrue("1" in {ccs["ccs"] for ccs in ccs_lst})
 
-
         cepr = CCSEngine(mode="pr-cpt")
         ccs_lst = cepr.get_ccs(["0001M"])
         self.assertTrue("234" in {ccs["ccs"] for ccs in ccs_lst})
-
-       
-
-
-if __name__=="__main__":
-    unittest.main()
-

@@ -1,6 +1,7 @@
 import unittest
 from hcuppy.elixhauser import ElixhauserEngine
 
+
 class TestElixhauserEngine(unittest.TestCase):
 
     def test_elixhauser(self):
@@ -11,12 +12,11 @@ class TestElixhauserEngine(unittest.TestCase):
         self.assertEqual(out["mrtlt_scr"], 9)
 
         out = ee.get_elixhauser(["M545"])
-        self.assertTrue(len(out["cmrbdt_lst"])==0)
+        self.assertTrue(len(out["cmrbdt_lst"]) == 0)
 
         out = ee.get_elixhauser(["D473"])
-        self.assertTrue(len(out["cmrbdt_lst"])==0)
+        self.assertTrue(len(out["cmrbdt_lst"]) == 0)
 
 
-if __name__=="__main__":
+if __name__ == "__main__":
     unittest.main()
-

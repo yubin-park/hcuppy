@@ -5,8 +5,10 @@ class PrClsEngine:
     def __init__(self):
         fn = "data/pc_icd10pcs_2018.csv"
         self.pr2cls = utils.read_prcls(fn)
+        icd9fn = "data/icd9to10_diagnosis.txt"
+        self.icd9to10 = utils.read_icd9to10(icd9fn)
 
-    def get_prcls(self, pr_lst):
+    def _get_prcls(self, pr_lst):
         """
         Returns Procedure Class or 
             a list of Procedure Class for the given ICD procedure code(s).
@@ -42,7 +44,35 @@ class PrClsEngine:
             out = cls_lst[0]
         return out
 
+    def get_prcls(self, pr_lst=None, pr9_lst=None):
+        """
+        Returns Procedure Class or 
+            a list of Procedure Class for the given ICD procedure code(s).
+        The original software can be found at 
+        https://www.hcup-us.ahrq.gov/toolssoftware/procedureicd10/
+            procedure_icd10.jsp
 
+        Parameters
+        __________
+        pr_lst: list of str, or str
+                A list of ICD10 procedure codes.
+                The output is a list of corresponding Procedure Classes.
+                If this parameter is a scalar (not a list), then 
+                the output will be a scalar.
 
+        pr9_lst: list of str, or str
+                A list of ICD9 procedure codes.
+                The output is a list of corresponding Procedure Classes.
+                If this parameter is a scalar (not a list), then 
+                the output will be a scalar.
+        """
+        
 
+        if pr_lst is not None:
+            return self._get_prcls(pr_lst)
 
+        if isinstance(pr9_lst, list):
+            icd10 = [ self.icd9to10.get(x, "000") for x in pr9_lst ]
+        else:
+            icd10 = self.icd9to10.get(pr9_lst, "000")
+        return self._get_prcls(icd10)

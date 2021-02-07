@@ -5,8 +5,8 @@ class CCIEngine:
     def __init__(self):
         fn = "data/cci_icd10cm_2019_1.csv"
         self.dx2cci = utils.read_cci(fn)
-        icd9fn = "data/icd9to10_diagnosis.txt"
-        self.icd9to10 = utils.read_icd9to10(icd9fn)
+        icd9dx_fn = "data/icd9to10_diagnosis.txt"
+        self.icd9to10_dx = utils.read_icd9to10_diagnosis(icd9dx_fn)
 
     def _get_cci(self, dx_lst):
         """
@@ -83,7 +83,7 @@ class CCIEngine:
             return self._get_cci(dx_lst)
 
         if isinstance(dx9_lst, list):
-            icd10 = [ self.icd9to10.get(x, "000") for x in dx9_lst ]
+            icd10 = [ self.icd9to10_dx.get(x, "000") for x in dx9_lst ]
         else:
-            icd10 = self.icd9to10.get(dx9_lst, "000")
+            icd10 = self.icd9to10_dx.get(dx9_lst, "000")
         return self._get_cci(icd10)

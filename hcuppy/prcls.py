@@ -5,8 +5,8 @@ class PrClsEngine:
     def __init__(self):
         fn = "data/pc_icd10pcs_2018.csv"
         self.pr2cls = utils.read_prcls(fn)
-        icd9fn = "data/icd9to10_diagnosis.txt"
-        self.icd9to10 = utils.read_icd9to10(icd9fn)
+        icd9pr_fn = 'data/icd9toicd10pcsgem.csv'
+        self.icd9to10_pr = utils.read_icd9to10_procedure(icd9pr_fn)
 
     def _get_prcls(self, pr_lst):
         """
@@ -72,7 +72,7 @@ class PrClsEngine:
             return self._get_prcls(pr_lst)
 
         if isinstance(pr9_lst, list):
-            icd10 = [ self.icd9to10.get(x, "000") for x in pr9_lst ]
+            icd10 = [ self.icd9to10_pr.get(x, "000") for x in pr9_lst ]
         else:
-            icd10 = self.icd9to10.get(pr9_lst, "000")
+            icd10 = self.icd9to10_pr.get(pr9_lst, "000")
         return self._get_prcls(icd10)

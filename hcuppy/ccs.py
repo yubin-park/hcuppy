@@ -14,8 +14,10 @@ class CCSEngine:
         elif mode == "pr-cpt":
             fn = "data/cpt2ccs.json"
             self.x2ccs = utils.read_cpt2ccs(fn)
+        icd9dx_fn = "data/icd9to10_diagnosis.txt"
+        self.icd9to10_dx = utils.read_icd9to10_diagnosis(icd9dx_fn)
 
-    def get_ccs(self, x_lst):
+    def _get_ccs(self, x_lst):
         """
         Returns CCS or a list of CCS for the given ICD code(s).
         Here, CCS stands for Clinical Classifications Software.
@@ -51,8 +53,32 @@ class CCSEngine:
             out = ccs_lst[0]
         return out
 
+    def get_ccs(self, x_lst=None, x9_lst=None):
+        """
+        Returns CCS or a list of CCS for the given ICD code(s).
+        Here, CCS stands for Clinical Classifications Software.
+        The original software can be found at 
+        https://www.hcup-us.ahrq.gov/toolssoftware/ccs10/ccs10.jsp
 
+        Parameters
+        __________
+        x_lst: list of str, or str
+                A list of ICD10 diagnosis or procedure codes.
+                The output is a list of corresponding CCS categories.
+                If this parameter is a scalar (not a list), then 
+                the output will be a scalar.
 
+        x9_lst: list of str, or str
+                A list of ICD9 diagnosis or procedure codes.
+                The output is a list of corresponding CCS categories.
+                If this parameter is a scalar (not a list), then 
+                the output will be a scalar.
+        """
+        if x_lst is not None:
+            return self._get_ccs(x_lst)
 
-
-
+        if isinstance(x9_lst, list):
+            icd10 = [ self.icd9to10_dx.get(x, "000") for x in x9_lst ]
+        else:
+            icd10 = self.icd9to10_dx.get(x9_lst, "000")
+        return self._get_ccs(icd10)

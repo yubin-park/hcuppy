@@ -212,7 +212,21 @@ def read_cpt2ccs(fn):
     with open(fn, "r") as fp:
         return json.load(fp)
 
+def read_icd9to10_diagnosis(fn):
+    icd9map = {}
+    fn = rscfn(__name__, fn)
+    with open(fn, "r") as fp:
+        reader = csv.reader(fp, delimiter="|")
+        for row in reader:
+            icd9map[row[0].replace(".", "")] = row[1].replace(".", "")
+        return icd9map
 
-
-
-
+def read_icd9to10_procedure(fn):
+    icd9map = {}
+    fn = rscfn(__name__, fn)
+    with open(fn, "r") as fp:
+        reader = csv.reader(fp, delimiter=",")
+        next(reader) ## Skip the header
+        for row in reader:
+            icd9map[row[0]] = row[1]
+        return icd9map

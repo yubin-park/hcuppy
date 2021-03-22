@@ -14,8 +14,7 @@ class CCSEngine:
         elif mode == "pr-cpt":
             fn = "data/cpt2ccs.json"
             self.x2ccs = utils.read_cpt2ccs(fn)
-        icd9dx_fn = "data/icd9to10_diagnosis.txt"
-        self.icd9to10_dx = utils.read_icd9to10_diagnosis(icd9dx_fn)
+        self.icd9to10_dx = utils.read_icd9to10_diagnosis("data/icd9to10_diagnosis.txt", "data/masterb10.csv")
 
     def _get_ccs(self, x_lst):
         """
@@ -78,7 +77,7 @@ class CCSEngine:
             return self._get_ccs(x_lst)
 
         if isinstance(x9_lst, list):
-            icd10 = [ self.icd9to10_dx.get(x, "000") for x in x9_lst ]
+            icd10 = [ self.icd9to10_dx.get(x, x) for x in x9_lst ]
         else:
-            icd10 = self.icd9to10_dx.get(x9_lst, "000")
+            icd10 = self.icd9to10_dx.get(x9_lst, x9_lst)
         return self._get_ccs(icd10)

@@ -6,6 +6,7 @@ class ElixhauserEngine:
     def __init__(self):
         fn = "data/elix_comformat_icd10cm_2019_1.txt"
         self.dx2elix = utils.read_elixhauser(fn)
+        self.icd9to10dx_map = utils.read_icd9to10_diagnosis("data/icd9to10_diagnosis.txt", "data/masterb10.csv")
 
         # NOTE: weights are adopted from the following link
         # https://www.hcup-us.ahrq.gov/toolssoftware/comorbidity/comindex2012-2015.txt
@@ -32,7 +33,7 @@ class ElixhauserEngine:
                 }
             }
 
-    def get_elixhauser(self, dx_lst):
+    def _get_elixhauser(self, dx_lst):
         """
         Returns the Elixhauser Comorbidity Index for the given list of 
         diagnosis codes.
@@ -105,6 +106,29 @@ class ElixhauserEngine:
                 "mrtlt_scr": mrtlt_scr}
 
         return out
+
+    def get_elixhauser(self, dx_lst, dx9_lst=None):
+        """
+        Returns the Elixhauser Comorbidity Index for the given list of 
+        diagnosis codes.
+        The original software can be found at
+        https://www.hcup-us.ahrq.gov/toolssoftware/comorbidityicd10/
+            comorbidity_icd10.jsp
+
+        Parameters
+        __________
+        icd_lst: list of str
+                A list of ICD10 diagnosis codes.
+        dx9_lst: list of str
+                A list of ICD9 diagnosis codes.
+        """
+        dx_in_list = []
+        if dx9_lst is not None:
+            for icd9 in dx9_lst:
+                dx_in_list.append(self.icd9to10dx_map.get(icd9, icd9))
+            return self._get_elixhauser(dx_in_list)
+        else:
+            return self._get_elixhauser(dx_lst)
 
 
 

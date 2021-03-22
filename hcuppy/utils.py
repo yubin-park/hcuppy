@@ -212,16 +212,30 @@ def read_cpt2ccs(fn):
     with open(fn, "r") as fp:
         return json.load(fp)
 
-def read_icd9to10_diagnosis(fn):
+def read_icd9to10_new_zealand(fn):
+	fn = rscfn(__name__, fn)
+	with open(fn, mode='r') as f:
+		d = {}
+		next(f)
+		for row in csv.reader(f, delimiter=','):
+			d[row[2]] = row[1]
+		return d
+
+def read_icd9to10_diagnosis(fn, fn_new_zealand=None):
     icd9map = {}
     fn = rscfn(__name__, fn)
     with open(fn, "r") as fp:
         reader = csv.reader(fp, delimiter="|")
         for row in reader:
             icd9map[row[0].replace(".", "")] = row[1].replace(".", "")
-        return icd9map
+    if fn_new_zealand is not None:
+        d = read_icd9to10_new_zealand(fn_new_zealand)
+    for k in d.keys():
+        if k not in icd9map:
+            icd9map[k] = d[k]
+    return icd9map
 
-def read_icd9to10_procedure(fn):
+def read_icd9to10_procedure(fn, fn_new_zealand=None):
     icd9map = {}
     fn = rscfn(__name__, fn)
     with open(fn, "r") as fp:
@@ -229,4 +243,9 @@ def read_icd9to10_procedure(fn):
         next(reader) ## Skip the header
         for row in reader:
             icd9map[row[0]] = row[1]
-        return icd9map
+    if fn_new_zealand is not None:
+        d = read_icd9to10_new_zealand(fn_new_zealand)
+    for k in d.keys():
+        if k not in icd9map:
+            icd9map[k] = d[k]
+    return icd9map

@@ -51,8 +51,8 @@ class CCIEngine:
         cci_lst = [cci for cci in self.get_cci(dx_lst)]
         return any(cci["is_chronic"] for cci in cci_lst)
 
-    def is_chronic(self, dx):
-        cci = self.get_cci(dx)
+    def is_chronic(self, dx, dx9_lst):
+        cci = self.get_cci(dx, dx9_lst)
         return cci["is_chronic"]
 
     def get_cci(self, dx_lst=None, dx9_lst=None):
@@ -78,11 +78,11 @@ class CCIEngine:
                 the output will be a scalar.
         """
 
-        if dx_lst is not None:
-            return self._get_cci(dx_lst)
-
-        if isinstance(dx9_lst, list):
-            icd10 = [ self.icd9to10_dx.get(x, x) for x in dx9_lst ]
+        if dx9_lst is not None:
+            if isinstance(dx9_lst, list):
+                icd10 = [ self.icd9to10_dx.get(x, x) for x in dx9_lst ]
+            else:
+                icd10 = self.icd9to10_dx.get(dx9_lst, dx9_lst)
         else:
-            icd10 = self.icd9to10_dx.get(dx9_lst, dx9_lst)
+            return self._get_cci(dx_lst)
         return self._get_cci(icd10)

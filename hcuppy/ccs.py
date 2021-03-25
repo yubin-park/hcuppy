@@ -8,13 +8,14 @@ class CCSEngine:
         if mode == "dx":
             fn = "data/ccs_dx_icd10cm_2019_1.csv"
             self.x2ccs = utils.read_ccs(fn)
+            self.icd9to10 = utils.read_icd9to10_diagnosis("data/icd9to10_diagnosis.txt", "data/masterb10.csv")
         elif mode == "pr":
             fn = "data/ccs_pr_icd10pcs_2019_1.csv"
             self.x2ccs = utils.read_ccs(fn)
+            self.icd9to10 = utils.read_icd9to10_procedure("data/icd9toicd10pcsgem.csv", "data/masterb10.csv")
         elif mode == "pr-cpt":
             fn = "data/cpt2ccs.json"
             self.x2ccs = utils.read_cpt2ccs(fn)
-        self.icd9to10_dx = utils.read_icd9to10_diagnosis("data/icd9to10_diagnosis.txt", "data/masterb10.csv")
 
     def _get_ccs(self, x_lst):
         """
@@ -73,11 +74,11 @@ class CCSEngine:
                 If this parameter is a scalar (not a list), then 
                 the output will be a scalar.
         """
-        if x_lst is not None:
-            return self._get_ccs(x_lst)
-
-        if isinstance(x9_lst, list):
-            icd10 = [ self.icd9to10_dx.get(x, x) for x in x9_lst ]
+        if x9_lst is not None:
+            if isinstance(x9_lst, list):
+                icd10 = [ self.icd9to10.get(x, x) for x in x9_lst ]
+            else:
+                icd10 = self.icd9to10.get(x9_lst, x9_lst)
         else:
-            icd10 = self.icd9to10_dx.get(x9_lst, x9_lst)
+            return self._get_ccs(x_lst)
         return self._get_ccs(icd10)

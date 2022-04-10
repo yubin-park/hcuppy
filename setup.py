@@ -13,7 +13,9 @@ setup(packages=find_packages(),
       author_email="yubin.park@gmail.com",
       url="https://github.com/yubin-park/hcuppy",
       license="Apache 2.0",
-      install_requires=[],
+      install_requires=[
+        'requests'
+      ],
       include_package_data=True,
       package_data={"": ["*.txt", "*.csv"]},
       classifiers=[

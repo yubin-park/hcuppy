@@ -143,8 +143,8 @@ Please refer to the test scripts under the `tests/` folder if you want to see ot
 Apache 2.0
 
 ## Authors
-Yubin Park, PhD
-Kevin Buchan Jr, PhD
+- Yubin Park, PhD
+- Kevin Buchan Jr, PhD
 
 ## References
 - https://www.hcup-us.ahrq.gov/

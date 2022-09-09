@@ -25,3 +25,6 @@ class TestCCSEngine(unittest.TestCase):
         cepr = CCSEngine(mode="pr-cpt")
         ccs_lst = cepr.get_ccs(["0001M"])
         self.assertTrue("234" in {ccs["ccs"] for ccs in ccs_lst})
+
+if __name__ == '__main__':
+    unittest.main()

@@ -8,6 +8,7 @@ from zipfile import ZipFile
 from urllib.request import urlopen
 import string
 import json
+from collections import defaultdict
 
 def _clnrw(row):
     return [x.replace('"',"").replace("'","").strip() for x in row]
@@ -147,6 +148,65 @@ def read_cci(fn):
     return dx2cci
 
 def read_elixhauser(fn):
+    dx2elix = defaultdict(list)
+    fn = rscfn(__name__, fn)
+    with open(fn, "r") as fp:
+        start = False
+        end = False
+        dxlst = []
+        for line in fp.readlines():
+            if line.strip() == "Value $COMFMT": 
+                start = True
+            if start and line.strip()==";":
+                end = True
+                break
+            if start and not end:
+                if "=" in line:
+                    pttr = r"\"(.*)\"\s*=\s*\"(.*)\""
+                    matches = re.findall(pttr, line)
+                    if len(matches) > 0 and len(matches[0]) == 2:
+                        dx, elix = matches[0][0], matches[0][1]
+                        dxlst.append(dx)
+                        for dx in dxlst:
+                            # one dx can map to multiple elix
+                            dx2elix[dx].append(elix)
+                        dxlst = []
+                elif "," in line:
+                    pttr = r"\"(.*)\","
+                    matches = re.findall(pttr, line)
+                    if len(matches) > 0:
+                        dx = matches[0]
+                        dxlst.append(dx)
+    
+    # Present on Admission Exceptions; added in Y22
+    with open(fn, "r") as fp:
+        start = False
+        end = False
+        dxlst = []
+        for line in fp.readlines():
+            if line.strip() == "Value $POAXMPT_V39FMT": 
+                start = True
+            if start and line.strip()==";":
+                end = True
+                break
+            if start and not end:
+                if "=" in line:
+                    pttr = r"\"(.*)\"\s*=\s*\"(.*)\""
+                    matches = re.findall(pttr, line)
+                    if len(matches) > 0 and len(matches[0]) == 2:
+                        dx, elix = matches[0][0], matches[0][1]
+                        dx2elix[dx].append("POAXMPT")
+                elif "," in line:
+                    pttr = r"\"(.*)\","
+                    matches = re.findall(pttr, line)
+                    if len(matches) > 0:
+                        dx = matches[0]
+                        dx2elix[dx].append("POAXMPT")
+
+    return dx2elix
+
+
+def read_elixhauser_v19(fn):
     dx2elix = {}
     fn = rscfn(__name__, fn)
     with open(fn, "r") as fp:

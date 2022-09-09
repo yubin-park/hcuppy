@@ -10,3 +10,6 @@ class TestPrClsEngine(unittest.TestCase):
         self.assertEqual(prcls_lst[0]["desc"], "Minor Diagnostic")
         self.assertEqual(pce.get_prcls("B231Y0Z")["desc"],
                          "Minor Diagnostic")
+
+if __name__ == '__main__':
+    unittest.main()

@@ -15,3 +15,6 @@ class TestUFlagEngine(unittest.TestCase):
         uflag_lst = ufe.get_uflag(rev_lst=["0380"], pr_lst=["BB0DZZZ"])
         self.assertTrue("Blood" in uflag_lst)
         self.assertTrue("Chest X-Ray" in uflag_lst)
+
+if __name__ == '__main__':
+    unittest.main()

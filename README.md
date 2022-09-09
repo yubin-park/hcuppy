@@ -90,10 +90,27 @@ please type `print(<instance>.<function>.__doc__)`.
 ]
 ```
 
-### Using Elixhauser Comorbidity Index
+### Using Elixhauser Comorbidity Index (Version Y22)
+
+The Y22 version implementation requires Present On Admission (POA) information. To use the algorithm, please prepare two arrays of diagnosis codes: one with the full list (`dx_full_lst`), and the other with POA (`dx_poa_lst`). PLEASE NOTE THAT If you omit `dx_poa_lst`, then the algorithm would assume all diagnoses were present on admission.
+
 ```python
 >>> from hcuppy.elixhauser import ElixhauserEngine
 >>> ee = ElixhauserEngine()
+>>> dx_full_lst = ["E640", "E119", "B190"]
+>>> dx_poa_lst = ["E119", "B190"]
+>>> out = ee.get_elixhauser(dx_full_lst, dx_poa_lst)
+>>> print(out)
+{'cmrbdt_lst': ['WGHTLOSS', 'DIAB_UNCX', 'LIVER_SEV'],
+ 'mrtlt_scr': 31,
+ 'rdmsn_scr': 16}
+>>>
+```
+
+### Using Elixhauser Comorbidity Index (Old Version before Y22)
+```python
+>>> from hcuppy.elixhauser_v19 import ElixhauserEngineV19
+>>> ee = ElixhauserEngineV19()
 >>> out = ee.get_elixhauser(["E119", "E108", "I10", "I110", "Z944"])
 >>> print(json.dumps(out, indent=2))
 {

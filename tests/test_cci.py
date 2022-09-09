@@ -16,3 +16,6 @@ class TestCCIEngine(unittest.TestCase):
 
         self.assertTrue(ce.get_cci("E119")["is_chronic"])
         self.assertTrue(ce.is_chronic("E119"))
+
+if __name__ == '__main__':
+    unittest.main()

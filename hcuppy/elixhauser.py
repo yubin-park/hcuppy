@@ -165,10 +165,7 @@ class ElixhauserEngine:
         def apply_score(cmrbdt_lst, model="rdmsn"):
             score = 0
             for cmrbdt in cmrbdt_lst:
-                if cmrbdt in {"HTNCX", "HTN"}:
-                    score += self.weights[model]["HTN_C"]
-                else:
-                    score += self.weights[model][cmrbdt]
+                score += self.weights[model].get(cmrbdt,0)
             return score
 
         if not isinstance(dx_full_lst, list):

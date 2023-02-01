@@ -86,9 +86,9 @@ class ElixhauserEngine:
                 "mwVALVE":0,
                 "mwWGHTLOSS":13
                 }
-            }# continue editing here
+            }
 
-        # Following the logic in CMR_Mapping_Program_v2022-1.sas
+        # Following the logic in CMR_Mapping_Program_v2023-1.sas
         # VALANYPOA and VALPOA
         self.valanypoa = {"AIDS", "ALCOHOL", "AUTOIMMUNE", "LUNG_CHRONIC",
                         "DEMENTIA", "DEPRESS", "DIAB_UNCX", "DIAB_CX",

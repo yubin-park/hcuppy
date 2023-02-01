@@ -6,54 +6,46 @@ class ElixhauserEngine:
     def __init__(self):
         # old 
         #fn = "data/elix_comformat_icd10cm_2019_1.txt"
-        # NOTE: updated in 2022-09-08
+        # NOTE: last update 2023-0123; prior update 2022-09-08
         # source: https://www.hcup-us.ahrq.gov/toolssoftware/comorbidityicd10/comorbidity_icd10.jsp#indices
-        fn = "data/CMR_Format_Program_v2022-1.sas" 
+        fn = "data/CMR_Format_Program_v2023-1.sas" 
         self.dx2elix = utils.read_elixhauser(fn)
 
         # OLD NOTE: weights are adopted from the following link
         # https://www.hcup-us.ahrq.gov/toolssoftware/comorbidity/comindex2012-2015.txt
-        # Weights from CMR_Index_Program_v2022-1.sas 
+        # Weights from CMR_Index_Program_v2023-1.sas 
         self.weights = {
             "rdmsn": {
-                "AIDS":5,
-                "ALCOHOL":3,
-                "ANEMDEF":5,
-                "AUTOIMMUNE":2,
-                "BLDLOSS":2,
-                "CANCER_LEUK":10,
-                "CANCER_LYMPH":7,
-                "CANCER_METS":11,
-                "CANCER_NSITU":0,
-                "CANCER_SOLID":7,
-                "CBVD":0,
-                "HF":7,
-                "COAG":3,
-                "DEMENTIA":1,
-                "DEPRESS":2,
-                "DIAB_CX":4,
-                "DIAB_UNCX":0,
-                "DRUG_ABUSE":6,
-                "HTN_CX":0,
-                "HTN_UNCX":0,
-                "LIVER_MLD":3,
-                "LIVER_SEV":10,
-                "LUNG_CHRONIC":4,
-                "NEURO_MOVT":1,
-                "NEURO_OTH":2,
-                "NEURO_SEIZ":5,
-                "OBESE":-2,
-                "PARALYSIS":3,
-                "PERIVASC":1,
-                "PSYCHOSES":6,
-                "PULMCIRC":3,
-                "RENLFL_MOD":4,
-                "RENLFL_SEV":8,
-                "THYROID_HYPO":0,
-                "THYROID_OTH":0,
-                "ULCER_PEPTIC":2,
+                "AIDS":19,
+                "ALCOHOL":6,
+                "ANEMDEF":9,
+                "ARTH":4,
+                "BLDLOSS":3,
+                "CHF":13,
+                "CHRNLUNG":8,
+                "COAG":7,
+                "DEPRESS":4,
+                "DM":6,
+                "DMCX":9,
+                "DRUG":14,
+                "HTN_C":-1,
+                "HYPOTHY":0,
+                "LIVER":10,
+                "LYMPH":16,
+                "LYTES":8,
+                "METS":21,
+                "NEURO":7,
+                "OBESE":-3,
+                "PARA":6,
+                "PERIVASC":4,
+                "PSYCH":10,
+                "PULMCIRC":5,
+                "RENLFAIL":15,
+                "TUMOR":15,
+                "ULCER":0,
                 "VALVE":0,
-                "WGHTLOSS":6},
+                "WGHTLOSS":10
+                 }, # continue editing here
             "mrtlt": {
                 "AIDS":-4,
                 "ALCOHOL":-1,

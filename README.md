@@ -102,7 +102,7 @@ The Y22 version implementation requires Present On Admission (POA) information. 
 >>> out = ee.get_elixhauser(dx_full_lst, dx_poa_lst)
 >>> print(out)
 {'cmrbdt_lst': ['WGHTLOSS', 'DIAB_UNCX', 'LIVER_SEV'],
- 'mrtlt_scr': 31,
+ 'mrtlt_scr': 29,
  'rdmsn_scr': 16}
 >>>
 ```

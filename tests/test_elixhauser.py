@@ -17,12 +17,27 @@ class TestElixhauserEngine(unittest.TestCase):
         out = ee.get_elixhauser(["D473"])
         self.assertTrue(len(out["cmrbdt_lst"]) == 0)
 
+    def test_readme_example(self):
+        ee = ElixhauserEngine()
+        dx_full_lst = ["E640", "E119", "B190"]
+        dx_poa_lst = ["E119", "B190"]
+        out = ee.get_elixhauser(dx_full_lst, dx_poa_lst)
+        self.assertEqual(out["rdmsn_scr"], 16)
+        self.assertEqual(out["mrtlt_scr"], 29)
+
+        
+        ee = ElixhauserEngineV19()
+        out = ee.get_elixhauser(["E119", "E108", "I10", "I110", "Z944"])
+        self.assertEqual(out["rdmsn_scr"], 31)
+        self.assertEqual(out["mrtlt_scr"], 9)
+
+
     def test_elixhauser(self):
         ee = ElixhauserEngine()
         out = ee.get_elixhauser(["E119", "E108", "I10", "I110", "Z944"])
         self.assertTrue("DIAB_CX" in out["cmrbdt_lst"])
         self.assertEqual(out["rdmsn_scr"], 21)
-        self.assertEqual(out["mrtlt_scr"], 31)
+        self.assertEqual(out["mrtlt_scr"], 29)
        
         out = ee.get_elixhauser(["E640", "E119"], ["E119"])
         self.assertTrue("WGHTLOSS" in out["cmrbdt_lst"])

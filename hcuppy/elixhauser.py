@@ -16,35 +16,44 @@ class ElixhauserEngine:
         # Weights from CMR_Index_Program_v2023-1.sas 
         self.weights = {
             "rdmsn": {
-                "AIDS":19,
-                "ALCOHOL":6,
-                "ANEMDEF":9,
-                "ARTH":4,
-                "BLDLOSS":3,
-                "CHF":13,
-                "CHRNLUNG":8,
-                "COAG":7,
-                "DEPRESS":4,
-                "DM":6,
-                "DMCX":9,
-                "DRUG":14,
-                "HTN_C":-1,
-                "HYPOTHY":0,
-                "LIVER":10,
-                "LYMPH":16,
-                "LYTES":8,
-                "METS":21,
-                "NEURO":7,
-                "OBESE":-3,
-                "PARA":6,
-                "PERIVASC":4,
-                "PSYCH":10,
-                "PULMCIRC":5,
-                "RENLFAIL":15,
-                "TUMOR":15,
-                "ULCER":0,
-                "VALVE":0,
-                "WGHTLOSS":10
+                "rwAIDS": 5,
+                "rwALCOHOL": 3,
+                "rwANEMDEF": 5,
+                "rwAUTOIMMUNE": 2,
+                "rwBLDLOSS": 2,
+                "rwCANCER_LEUK": 10,
+                "rwCANCER_LYMPH": 7,
+                "rwCANCER_METS": 11,
+                "rwCANCER_NSITU": 0,
+                "rwCANCER_SOLID": 7,
+                "rwCBVD": 0,
+                "rwHF": 7,
+                "rwCOAG": 3,
+                "rwDEMENTIA": 1,
+                "rwDEPRESS": 2,
+                "rwDIAB_CX": 4,
+                "rwDIAB_UNCX": 0,
+                "rwDRUG_ABUSE": 6,
+                "rwHTN_CX": 0,
+                "rwHTN_UNCX": 0,
+                "rwLIVER_MLD": 3,
+                "rwLIVER_SEV": 10,
+                "rwLUNG_CHRONIC": 4,
+                "rwNEURO_MOVT": 1,
+                "rwNEURO_OTH": 2,
+                "rwNEURO_SEIZ": 5,
+                "rwOBESE": -2,
+                "rwPARALYSIS": 3,
+                "rwPERIVASC": 1,
+                "rwPSYCHOSES": 6,
+                "rwPULMCIRC": 3,
+                "rwRENLFL_MOD": 4,
+                "rwRENLFL_SEV": 8,
+                "rwTHYROID_HYPO": 0,
+                "rwTHYROID_OTH": 0,
+                "rwULCER_PEPTIC": 2,
+                "rwVALVE": 0,
+                "rwWGHTLOSS": 6
                  }, 
             "mrtlt": {
                 "mwAIDS":-4,
@@ -157,7 +166,10 @@ class ElixhauserEngine:
         def apply_score(cmrbdt_lst, model="rdmsn"):
             score = 0
             for cmrbdt in cmrbdt_lst:
-                score += self.weights[model].get(cmrbdt,0)
+                if model == "rdmsn":
+                    score += self.weights[model].get("rw"+cmrbdt,0)
+                elif model == "mrtlt":
+                    score += self.weights[model].get("mw"+cmrbdt,0)
             return score
 
         if not isinstance(dx_full_lst, list):

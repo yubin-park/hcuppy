@@ -1,5 +1,7 @@
 # hcuppy 
 
+Current version is 0.0.8.
+
 A Python package for [H-CUP Tools and Software](https://www.hcup-us.ahrq.gov/tools_software.jsp).
 The modules implemented in this package are as follows:
 - "[CCS (Clinical Classification Software)](https://www.hcup-us.ahrq.gov/toolssoftware/ccs10/ccs10.jsp)" converts ICD-10 diagnosis and procedure codes to clinically meaningful groups
